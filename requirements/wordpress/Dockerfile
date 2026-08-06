@@ -5,6 +5,7 @@ RUN apt-get update && \
      php-fpm \
      php-mysql \
      php-redis \
+     php-xml \
      wget \
      curl && \
     apt-get clean

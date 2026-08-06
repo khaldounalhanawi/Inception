@@ -78,7 +78,18 @@ networks:
 
 volumes:
  database:
+  driver: local
+  driver_opts:
+   type: none
+   device: /home/${WP_ADMIN_USER}/data/database
+   o: bind
+
  wordpress-data:
+  driver: local
+  driver_opts:
+   type: none
+   device: /home/${WP_ADMIN_USER}/data/wordpress
+   o: bind
 
 secrets:
  db_password:
