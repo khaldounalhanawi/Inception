@@ -2,7 +2,7 @@
 
 MYSQL_PASSWORD=$(cat /run/secrets/db_password)
 WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
-
+WP_GUEST_PASSWORD=$(cat /run/secrets/wp_guest_password)
 
 if [ ! -f "/var/www/html/wp-config.php" ]; then
  wget https://wordpress.org/latest.tar.gz
@@ -36,6 +36,12 @@ if ! wp core is-installed --allow-root; then
         --admin_email="$WP_ADMIN_EMAIL" \
         --allow-root
 
+    wp user create \
+        "$WP_GUEST_USER" \
+        "$WP_GUEST_EMAIL" \
+        --role=subscriber \
+        --user_pass="$WP_GUEST_PASSWORD" \
+        --allow-root
 fi
 
 if ! wp plugin is-active redis-cache --allow-root; then
