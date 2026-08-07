@@ -4,19 +4,31 @@ NAME = inception
 
 COMPOSE = docker compose -f src/docker-compose.yml
 
-DATA_PATH = /home/$(WP_ADMIN_USER)
-
 all: up
+
+hosts:
+	@if ! grep -q "$(DOMAIN_NAME)" /etc/hosts; then \
+		sudo sh -c 'echo "\n#for Inception server\n$(LOCAL_IP) $(DOMAIN_NAME)" >> /etc/hosts'; \
+	fi
 
 setup:
 	sudo mkdir -p $(DATA_PATH)/data/database
 	sudo mkdir -p $(DATA_PATH)/data/wordpress
 
-up: setup
+up: hosts setup
 	$(COMPOSE) up -d --build
 
 down:
 	$(COMPOSE) down
+
+start:
+	$(COMPOSE) start
+
+stop:
+	$(COMPOSE) stop
+
+logs:
+	$(COMPOSE) logs -f
 
 clean:
 	$(COMPOSE) down -v
@@ -26,5 +38,3 @@ fclean:
 	sudo rm -rf $(DATA_PATH)
 
 re: fclean all
-
-# add logs, ps start stop 

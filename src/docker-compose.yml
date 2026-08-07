@@ -81,14 +81,14 @@ volumes:
   driver: local
   driver_opts:
    type: none
-   device: /home/${WP_ADMIN_USER}/data/database
+   device: ${DATA_PATH}/data/database
    o: bind
 
  wordpress-data:
   driver: local
   driver_opts:
    type: none
-   device: /home/${WP_ADMIN_USER}/data/wordpress
+   device: ${DATA_PATH}/data/wordpress
    o: bind
 
 secrets:
