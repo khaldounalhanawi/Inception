@@ -27,7 +27,7 @@ Every service is built from a local Dockerfile under [src/requirements/](src/req
 - **Docker secrets for passwords:** passwords are never written in environment variables or baked into images — they are mounted at runtime from `secrets/*.txt` into `/run/secrets/`.
 - **Healthcheck-driven startup:** WordPress waits for MariaDB and Redis to report *healthy* before starting; nginx waits for WordPress. All services restart automatically (`unless-stopped`).
 - **Automatic local domain:** `make` adds `<login>.42.fr` → `127.0.0.1` to `/etc/hosts` so the site is browsed by domain name, not `localhost`.
-- **Persistence via bind-mounted volumes:** the database and WordPress files live on the host under `~/data/`, so containers and images can be rebuilt without losing the site.
+- **Persistence via named Docker volumes:** the database and WordPress files are stored in two **named volumes** (`database`, `wordpress-data`) declared in the Compose file and managed through Docker's volume lifecycle. Their storage location is pinned to `~/data/` on the host via volume `driver_opts`, so containers and images can be rebuilt without losing the site.
 
 ### Technical comparisons
 
@@ -61,11 +61,13 @@ Every service is built from a local Dockerfile under [src/requirements/](src/req
 
 #### Docker Volumes vs Bind Mounts
 
-| | Plain Docker volumes | Bind mounts |
+| | Docker named volumes (used here) | Bind mounts |
 |---|---|---|
-| Managed by | Docker (`/var/lib/docker/volumes/...`) | A path you choose on the host |
-| Visibility of data | Hidden from the host user | Directly inspectable/editable on the host |
-| This project | — | Both volumes are **bind mounts created through Compose** (`driver_opts: type: none, o: bind, device: ~/data/...`): MariaDB → `~/data/database`, WordPress → `~/data/wordpress`. This combines Docker's volume lifecycle with a known, persistent host location, as required by the subject. |
+| Declared as | Entries in the Compose `volumes:` top-level block, referenced by name in each service | Inline host paths in the service definition (`- /host/path:/container/path`) |
+| Managed by | **Docker** — created, listed, inspected, and removed through the Docker volume lifecycle (`docker volume ls/inspect/rm`, `compose down -v`) | The host user only; Docker knows nothing about them |
+| Storage location | Chosen through the volume definition; here pinned with `driver_opts` to a known host path | Arbitrary host path hard-coded per service |
+| Portability | Definition stays valid across machines (path resolved from `.env`) | Breaks if the host path differs |
+| In this project | `database` and `wordpress-data` are **named volumes** whose storage is located at `$(DATA_PATH)/data/database` and `$(DATA_PATH)/data/wordpress` via the local driver's `device` option — giving Docker-managed lifecycle **and** a predictable persistent location, as required by the subject | Not used |
 
 ## Instructions
 
@@ -127,7 +129,7 @@ make re         # fclean + rebuild from scratch
 - [WordPress WP-CLI handbook](https://make.wordpress.org/cli/handbook/) — scripted install: `wp config create`, `wp core install`, `wp user create`, `wp plugin install`.
 - [PHP-FPM documentation](https://www.php.net/manual/en/install.fpm.php) — pool configuration (`www.conf`).
 - [Redis documentation](https://redis.io/docs/) and the [Redis Object Cache plugin](https://wordpress.org/plugins/redis-cache/) — bonus cache integration.
-- 42 subject PDF and peer discussions/evaluations.
+- https://medium.com/@imyzf/inception-3979046d90a0
 
 ### Use of AI
 
