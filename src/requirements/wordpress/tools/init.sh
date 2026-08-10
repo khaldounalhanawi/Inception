@@ -4,6 +4,18 @@ MYSQL_PASSWORD=$(cat /run/secrets/db_password)
 WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
 WP_GUEST_PASSWORD=$(cat /run/secrets/wp_guest_password)
 
+set -e
+
+admin_user_lower=$(printf '%s' "$WP_ADMIN_USER" | tr '[:upper:]' '[:lower:]')
+
+case "$admin_user_lower" in
+    *admin*|*administrator*)
+        echo "ERROR: invalid administrator username"
+        exit 1
+        ;;
+esac
+
+
 if [ ! -f "/var/www/html/wp-config.php" ]; then
  wget https://wordpress.org/latest.tar.gz
  tar -xzf latest.tar.gz

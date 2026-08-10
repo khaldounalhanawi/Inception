@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 MYSQL_PASSWORD=$(cat /run/secrets/db_password)
 
 if [ ! -d "/var/lib/mysql/mysql" ]; then
