@@ -13,7 +13,7 @@ RUN openssl req -x509 -nodes -days 365 \
     -subj "/C=DE/ST=Berlin/L=Berlin/O=42/OU=Inception/CN=${DOMAIN_NAME}"
 
 
-COPY conf/nginx.conf etc/nginx/nginx.conf
+COPY conf/nginx.conf /etc/nginx/nginx.conf
 COPY tools/init.sh /usr/local/bin/init.sh
 
 RUN chmod +x /usr/local/bin/init.sh
