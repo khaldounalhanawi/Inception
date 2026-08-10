@@ -56,7 +56,10 @@ services:
   restart: unless-stopped
 
  nginx:
-  build: ./requirements/nginx
+  build:
+   context: ./requirements/nginx
+   args:
+    DOMAIN_NAME: ${DOMAIN_NAME}
   container_name: nginx
   environment:
    DOMAIN_NAME: ${DOMAIN_NAME}
