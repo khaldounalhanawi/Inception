@@ -76,7 +76,7 @@ Every service is built from a local Dockerfile under [src/requirements/](src/req
 ### 1. Clone and configure
 
 ```sh
-git clone <repo-url> inception && cd inception
+git clone https://github.com/khaldounalhanawi/Inception.git inception && cd inception
 ```
 
 Edit [src/.env](src/.env) if needed — it defines the domain name (`<login>.42.fr`), usernames, site title, and the data path.
