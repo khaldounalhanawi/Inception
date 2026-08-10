@@ -30,6 +30,9 @@ stop:
 logs:
 	$(COMPOSE) logs -f
 
+services:
+	$(COMPOSE) ps
+
 clean:
 	$(COMPOSE) down -v
 
