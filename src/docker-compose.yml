@@ -38,6 +38,7 @@ services:
   secrets:
    - db_password
    - wp_admin_password
+   - wp_guest_password
 
   volumes:
    - wordpress-data:/var/www/html
@@ -109,3 +110,6 @@ secrets:
 
  wp_admin_password:
   file: ../secrets/wp_admin_password.txt
+
+ wp_guest_password:
+  file: ../secrets/wp_guest_password.txt

@@ -10,7 +10,7 @@ RUN openssl req -x509 -nodes -days 365 \
     -newkey rsa:2048 \
     -keyout /etc/nginx/ssl/server.key \
     -out /etc/nginx/ssl/server.crt \
-    -subj "/C=DE/ST=Berlin/L=Berlin/O=42/OU=Inception/CN=kalhanaw.42.f4"
+    -subj "/C=DE/ST=Berlin/L=Berlin/O=42/OU=Inception/CN=${DOMAIN_NAME}"
 
 
 COPY conf/nginx.conf etc/nginx/nginx.conf
