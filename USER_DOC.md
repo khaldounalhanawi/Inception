@@ -101,20 +101,11 @@ Credentials are split into two places:
 - `WP_ADMIN_EMAIL` / `WP_GUEST_EMAIL` — the users' email addresses.
 - `MYSQL_USER` / `MYSQL_DATABASE` — the database user and database name.
 
-### Passwords — `secrets/` (you must create this folder)
+### Passwords — `secrets/`
 
 Passwords are **never** stored in the `.env` file. They live as plain-text files in a `secrets/` folder at the repository root, which is injected into the containers as Docker secrets.
 
-The folder is **not included** in the repository — create it before the first launch:
-
-```sh
-mkdir -p secrets
-
-echo 'YourDbPassword'       > secrets/db_password.txt
-echo 'YourDbRootPassword'   > secrets/db_root_password.txt
-echo 'YourAdminPassword'    > secrets/wp_admin_password.txt
-echo 'YourGuestPassword'    > secrets/wp_guest_password.txt
-```
+The folder is **Automatically generaterd on run time** in the repository 
 
 Each file must contain **only the password**, on a single line.
 
@@ -129,8 +120,9 @@ Without these four files, the project will not start.
 
 ### Changing credentials
 
-- **Before the first launch:** edit `src/.env` and/or the files in `secrets/`, then run `make`.
+- **Before the first launch:** edit `src/.env`, then run `make`.
 - **After the site is already installed:** changing `.env` or the secrets has **no effect** on existing WordPress users, because users are created only once during the initial installation. Either change the password from the WordPress admin panel (*Users → Profile*), or rebuild from scratch with `make re` (this erases all site data).
+- **If a secrets/ folder already exists:** when you 'make all' again it will not create a new secrets, and therefor you would retain the passwords that already exist inside the secrects folder.
 
 > 🔒 Never commit real passwords to a public repository. The `secrets/` folder is meant to stay private.
 

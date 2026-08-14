@@ -81,19 +81,7 @@ git clone https://github.com/khaldounalhanawi/Inception.git inception && cd ince
 
 Edit [src/.env](src/.env) if needed — it defines the domain name (`<login>.42.fr`), usernames, site title, and the data path.
 
-### 2. Create the secrets
-
-The `secrets/` folder is **not** included in the repository. Create it with four password files (one password per line):
-
-```sh
-mkdir -p secrets
-echo 'YourDbPassword'      > secrets/db_password.txt
-echo 'YourDbRootPassword'  > secrets/db_root_password.txt
-echo 'YourAdminPassword'   > secrets/wp_admin_password.txt
-echo 'YourGuestPassword'   > secrets/wp_guest_password.txt
-```
-
-### 3. Build and run
+### 2. Build and run
 
 ```sh
 make
@@ -101,7 +89,7 @@ make
 
 This adds the domain to `/etc/hosts`, creates the data folders, builds the four images, and starts the stack.
 
-### 4. Use the site
+### 3. Use the site
 
 - Website: `https://<login>.42.fr` (accept the self-signed certificate warning)
 - Admin panel: `https://<login>.42.fr/wp-admin` — log in with `WP_ADMIN_USER` and the password from `secrets/wp_admin_password.txt`

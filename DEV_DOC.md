@@ -61,16 +61,14 @@ Complete setup, in order: **1) install the prerequisites → 2) configure `src/.
 
    > Note: values are written as `KEY = value` (with spaces) and are consumed by GNU Make, so keep that exact format.
 
-2. **`secrets/`** — this folder is **not shipped with the repository**; you must create it yourself at the repo root, with four plain-text files, each containing only the password on one line:
+2. **`secrets/`** — this folder is **not shipped with the repository**; rather it is automatically generated in case you don't create it yourself in the directory.
 
-   ```sh
-   mkdir -p secrets
+   there must be 4 files with these exact names:
 
-   echo 'YourDbPassword'      > secrets/db_password.txt        # password for MYSQL_USER
-   echo 'YourDbRootPassword'  > secrets/db_root_password.txt   # MariaDB root password
-   echo 'YourAdminPassword'   > secrets/wp_admin_password.txt  # WordPress admin password
-   echo 'YourGuestPassword'   > secrets/wp_guest_password.txt  # WordPress guest password
-   ```
+      - secrets/db_password.txt
+      - secrets/db_root_password.txt
+      - secrets/wp_admin_password.txt
+      - secrets/wp_guest_password.txt
 
    Compose mounts them into the containers at `/run/secrets/<name>` (see the `secrets:` blocks in [docker-compose.yml](src/docker-compose.yml)); the init scripts read them with `cat`. They are never baked into the images. The build fails at `docker compose up` if any of the four files is missing.
 
